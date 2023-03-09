@@ -1,0 +1,18 @@
+model CarModel{
+    id Int @id @default(autoincrement())
+    barndId Int
+    count Int 
+    model String
+    priceCategory PRICECATEGORY
+    barnd Barnd @relation(fields: [barndId],references: [id])
+}
+enum PRICECATEGORY {
+    BASIC 
+    STANDARD 
+    MEDIUM 
+    PREMIUM
+}
+model Barnd{
+    id Int @id
+    carModel CarModel[]
+}

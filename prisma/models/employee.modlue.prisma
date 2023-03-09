@@ -1,0 +1,18 @@
+model Employee {
+    id          Int            @id @default(autoincrement())
+    accountId   Int
+    firstName   String
+    lastName    String
+    email       String         @unique
+    phoneNumber String         
+    status      EmployeeStatus 
+   user     User        @relation(fields: [accountId], references: [id])
+}
+enum EmployeeStatus {
+    WORKING
+    FIRED
+}
+model User{
+    id Int @id
+    employee Employee[]
+}

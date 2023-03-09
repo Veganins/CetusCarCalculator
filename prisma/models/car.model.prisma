@@ -1,0 +1,20 @@
+model Car{
+    id  Int  @id  @default(autoincrement())
+    carModelId Int
+    carMileage Float
+    dayRentalPrice Float
+    fuelConsumption Int
+    carModel CarModel @relation(fields: [carModelId],references: [id])
+    startrentalDate DateTime?
+    overRentalDate DateTime?
+    carStatus CARSTATUS
+}
+enum CARSTATUS {
+    REPAIRING
+    AVAILABLE
+}
+
+model CarModel{
+    id Int @id
+    car Car[] 
+}
