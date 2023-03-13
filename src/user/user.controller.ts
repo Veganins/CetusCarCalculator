@@ -6,7 +6,7 @@ import { GetUser } from "src/api/decorator/get-user.decorator";
 @Controller("user")
 export class UserController {
     @Get("me")
-    GetMe(@GetUser() user: User, @GetUser("email") email: string) {
+    GetMe(@GetUser() user: User) {
         return user;
     }
 }
