@@ -5,13 +5,16 @@ import { RegisterDto } from "./dto";
 @Controller("auth")
 export class AuthController {
     constructor(private authService: ServisesAuthServise) {}
+
     @Post("/signup")
-    signin(@Body() dto: RegisterDto) {
-        return this.authService.signup(dto);
+    @HttpCode(HttpStatus.CREATED)
+    async signup(@Body() dto: RegisterDto) {
+        console.log(Date.now());
+        return await this.authService.signup(dto);
     }
     // @HttpCode(HttpStatus.OK)
     // @Post("/signin")
-    // signup(@Body() dto: RegisterDto) {
+    // signin(@Body() dto: RegisterDto) {
     //     return this.authService.signin(dto);
     // }
     // @Post("/logout")

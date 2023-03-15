@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
-import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
+import { RepositoryUsersModule } from "src/repositories/users/repository.users.module";
 import { ServisesAuthServise } from "./services.auth.service";
 import { ServicesAuthValidator } from "./services.auth.validator";
 
 @Module({
-    imports: [RepositoryUsersRepository],
+    imports: [RepositoryUsersModule],
     providers: [ServisesAuthServise, ServicesAuthValidator],
     exports: [ServisesAuthServise],
 })

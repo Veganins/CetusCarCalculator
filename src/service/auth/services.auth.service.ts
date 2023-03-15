@@ -1,26 +1,38 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-//import * as argon from "argon2";
+import * as argon from "argon2";
 //import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { RegisterDto } from "src/api/auth/dto/register.dto";
 import { ServicesAuthValidator } from "./services.auth.validator";
+import { RepositoryUsersDataFactory } from "src/repositories/users/repository.users.dataFactory";
+import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
+import { Prisma } from "@prisma/client";
+import { differenceInCalendarYears } from "date-fns";
 
 @Injectable()
 export class ServisesAuthServise {
     constructor(
+        private readonly usersRepository: RepositoryUsersRepository,
         private prisma: PrismaService,
-        private jwt: JwtService,
         private config: ConfigService,
         private readonly validator: ServicesAuthValidator
     ) {}
     async signup(registerdata: RegisterDto): Promise<void> {
         //geanerate the password hash
-        const { password, confirmpassword, email } = registerdata;
+        const { password, confirmpassword, email, birthDate, expirationDateDrivingLicense } =
+            registerdata;
         this.validator.passwordValidatorErrorHandler(password, confirmpassword);
+        this.validator.emailValidatorEmailHandler(email);
+        // this.validator.birthDateValidatorEmailHandler(birthDate);
+        const hashedPassword = await argon.hash(password);
+        console.log(differenceInCalendarYears(Date.now(), birthDate));
+        // const createUserData: Prisma.UserCreateInput = {
+        //     ...RepositoryUsersDataFactory.password(hashedPassword),
+        //     ...RepositoryUsersDataFactory.email(email),
+        // };
+        // await this.usersRepository.create(createUserData);
         /* try {
-            const hash = await argon.hash(registerdto.password);
             //save the new  user to database
             const user = await this.prisma.user.create({
                 data: {

@@ -3,5 +3,6 @@ model UserLogin{
     userId Int 
     expires      DateTime
     roles     String   
+    refreshToken String 
     createdAt    DateTime @default(now())
 }

@@ -60,18 +60,17 @@ model Employee {
 }
 
 model User {
-  id          Int         @id @default(autoincrement())
-  email       String?     @unique
-  password    String?
-  zipCode     String?
-  phoneNumber String?
-  address     String?
-  hash        String?
-  birthDate   DateTime?
-  createdAt   DateTime?   @default(now())
-  roles       String?     @default("user")
-  rental      Rental[]    @relation("RentalToUser")
-  userLogins  UserLogin[] @relation("UserToUserLogin")
+  id                           Int         @id @default(autoincrement())
+  email                        String      @unique
+  password                     String
+  phoneNumber                  String?
+  address                      String?
+  birthDate                    DateTime
+  createdAt                    DateTime?   @default(now())
+  roles                        String?     @default("user")
+  expirationDateDrivingLicense DateTime
+  rental                       Rental[]    @relation("RentalToUser")
+  userLogins                   UserLogin[] @relation("UserToUserLogin")
 }
 
 model UserLogin {
