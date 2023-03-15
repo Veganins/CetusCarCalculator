@@ -8,7 +8,6 @@ import { ServicesAuthValidator } from "./services.auth.validator";
 import { RepositoryUsersDataFactory } from "src/repositories/users/repository.users.dataFactory";
 import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
 import { Prisma } from "@prisma/client";
-import { differenceInCalendarYears } from "date-fns";
 
 @Injectable()
 export class ServisesAuthServise {
@@ -23,15 +22,19 @@ export class ServisesAuthServise {
         const { password, confirmpassword, email, birthDate, expirationDateDrivingLicense } =
             registerdata;
         this.validator.passwordValidatorErrorHandler(password, confirmpassword);
-        this.validator.emailValidatorEmailHandler(email);
-        // this.validator.birthDateValidatorEmailHandler(birthDate);
+        await this.validator.emailValidatorEmailHandler(email);
+        this.validator.birthDateValidatorEmailHandler(birthDate);
+
         const hashedPassword = await argon.hash(password);
-        console.log(differenceInCalendarYears(Date.now(), birthDate));
-        // const createUserData: Prisma.UserCreateInput = {
-        //     ...RepositoryUsersDataFactory.password(hashedPassword),
-        //     ...RepositoryUsersDataFactory.email(email),
-        // };
-        // await this.usersRepository.create(createUserData);
+        const createUserData: Prisma.UserCreateInput = {
+            ...RepositoryUsersDataFactory.password(hashedPassword),
+            ...RepositoryUsersDataFactory.email(email),
+            ...RepositoryUsersDataFactory.birthDate(birthDate),
+            ...RepositoryUsersDataFactory.expirationDateDrivingLicense(
+                expirationDateDrivingLicense
+            ),
+        };
+        await this.usersRepository.create(createUserData);
         /* try {
             //save the new  user to database
             const user = await this.prisma.user.create({

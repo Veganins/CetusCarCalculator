@@ -12,4 +12,16 @@ export class RepositoryUsersDataFactory {
             email,
         };
     }
+    static birthDate(birthDate: Date): Pick<Prisma.UserCreateInput, "birthDate"> {
+        return {
+            birthDate,
+        };
+    }
+    static expirationDateDrivingLicense(
+        expirationDateDrivingLicense: Date
+    ): Pick<Prisma.UserCreateInput, "expirationDateDrivingLicense"> {
+        return {
+            expirationDateDrivingLicense,
+        };
+    }
 }
