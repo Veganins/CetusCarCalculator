@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
-import { differenceInCalendarDays } from "date-fns";
+import { compareAsc, differenceInCalendarDays, differenceInDays } from "date-fns";
 import { RepositoryUsersFilterFactory } from "src/repositories/users/repository.users.filterFactory";
 import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
+import { dateIsExpired } from "./errors/400/dateIsExpired.error";
 import { EmailNotUnique } from "./errors/400/emailNotUnique.error";
 import { NotAcceptAge } from "./errors/400/NotAcceptAge.error";
 import { PasswordsNotMatch } from "./errors/400/passwordsNotMatch.error";
@@ -25,7 +26,11 @@ export class ServicesAuthValidator {
         if (6574 >= dayInYears) throw new NotAcceptAge();
     }
     expirationDateDrivingLicenseValidatorErrorHandler(expirationDateDrivingLicense: Date) {
-        const dayInYears = differenceInCalendarDays(Date.now(), expirationDateDrivingLicense);
-        if ( >= dayInYears) throw new NotAcceptAge();
+        if (compareAsc(Date.now(), expirationDateDrivingLicense)) {
+            if (differenceInDays(Date.now(), expirationDateDrivingLicense) > 0)
+                throw new dateIsExpired();
+        } else {
+            throw new dateIsExpired();
+        }
     }
 }

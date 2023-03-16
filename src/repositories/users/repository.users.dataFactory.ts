@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { ROLES_IDS_ENUM } from "src/seed/init/roles/idsEnums/rolesIds.enum";
 
 export class RepositoryUsersDataFactory {
     static password(password: string): Pick<Prisma.UserCreateInput, "password"> {
@@ -22,6 +23,15 @@ export class RepositoryUsersDataFactory {
     ): Pick<Prisma.UserCreateInput, "expirationDateDrivingLicense"> {
         return {
             expirationDateDrivingLicense,
+        };
+    }
+    static setRoleToNormalUser(): Pick<Prisma.UserCreateInput, "roles"> {
+        return {
+            roles: {
+                connect: {
+                    id: ROLES_IDS_ENUM.USER,
+                },
+            },
         };
     }
 }

@@ -4,11 +4,11 @@ model User {
     password   String
     phoneNumber String?
     address String?
-    birthDate  DateTime
-    expirationDateDrivingLicense DateTime     
+    birthDate  DateTime?
+    expirationDateDrivingLicense DateTime?     
     createdAt  DateTime?     @default(now())
     userLogins UserLogin[]
-    roles      String? @default("user")
+    roles      Role[] 
 
    
 }
@@ -17,4 +17,8 @@ model UserLogin {
     id     Int  @id
     userId Int
     user   User @relation(fields: [userId], references: [id])
+}
+model Role {
+    id    Int    @id
+    users User[]
 }
