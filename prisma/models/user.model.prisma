@@ -8,17 +8,17 @@ model User {
     expirationDateDrivingLicense DateTime?     
     createdAt  DateTime?     @default(now())
     userLogins UserLogin[]
-    roles      Role[] 
+    roles      ROLE  
 
-   
+@@map("users")   
 }
 
 model UserLogin {
     id     Int  @id
     userId Int
-    user   User @relation(fields: [userId], references: [id])
+    users   User @relation(fields: [userId], references: [id])
 }
-model Role {
-    id    Int    @id
-    users User[]
+enum ROLE {
+    USER
+    GLOBAL_ADMIN
 }

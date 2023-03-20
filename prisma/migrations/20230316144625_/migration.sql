@@ -7,6 +7,9 @@ CREATE TYPE "PRICECATEGORY" AS ENUM ('BASIC', 'STANDARD', 'MEDIUM', 'PREMIUM');
 -- CreateEnum
 CREATE TYPE "RENTALSTATUS" AS ENUM ('LASTS', 'CANCELLED', 'COMPLETED');
 
+-- CreateEnum
+CREATE TYPE "ROLE" AS ENUM ('USER', 'GLOBAL_ADMIN');
+
 -- CreateTable
 CREATE TABLE "Brand" (
     "id" SERIAL NOT NULL,
@@ -68,19 +71,18 @@ CREATE TABLE "Employee" (
 );
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
-    "email" TEXT,
-    "password" TEXT,
-    "zipCode" TEXT,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "phoneNumber" TEXT,
     "address" TEXT,
-    "hash" TEXT,
     "birthDate" TIMESTAMP(3),
+    "expirationDateDrivingLicense" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "roles" TEXT DEFAULT 'user',
+    "roles" "ROLE" NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -89,13 +91,14 @@ CREATE TABLE "UserLogin" (
     "userId" INTEGER NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
     "roles" TEXT NOT NULL,
+    "refreshToken" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "UserLogin_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
 ALTER TABLE "Car" ADD CONSTRAINT "Car_carModelId_fkey" FOREIGN KEY ("carModelId") REFERENCES "CarModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -110,7 +113,7 @@ ALTER TABLE "Rental" ADD CONSTRAINT "Rental_employeeId_fkey" FOREIGN KEY ("emplo
 ALTER TABLE "Rental" ADD CONSTRAINT "Rental_carId_fkey" FOREIGN KEY ("carId") REFERENCES "Car"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rental" ADD CONSTRAINT "Rental_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Rental" ADD CONSTRAINT "Rental_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserLogin" ADD CONSTRAINT "UserLogin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserLogin" ADD CONSTRAINT "UserLogin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

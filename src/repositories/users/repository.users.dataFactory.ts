@@ -27,11 +27,7 @@ export class RepositoryUsersDataFactory {
     }
     static setRoleToNormalUser(): Pick<Prisma.UserCreateInput, "roles"> {
         return {
-            roles: {
-                connect: {
-                    id: ROLES_IDS_ENUM.USER,
-                },
-            },
+            roles: "USER",
         };
     }
 }
