@@ -22,10 +22,16 @@ export class ServicesAuthValidator {
         if (userWithSameEmail > 0) throw new EmailNotUnique();
     }
     birthDateValidatorErrorHandler(birthDate: Date) {
+        if (birthDate == null) {
+            return;
+        }
         const dayInYears = differenceInCalendarDays(Date.now(), birthDate);
         if (6574 >= dayInYears) throw new NotAcceptAge();
     }
     expirationDateDrivingLicenseValidatorErrorHandler(expirationDateDrivingLicense: Date) {
+        if (expirationDateDrivingLicense == null) {
+            return;
+        }
         if (compareAsc(Date.now(), expirationDateDrivingLicense)) {
             if (differenceInDays(Date.now(), expirationDateDrivingLicense) > 0)
                 throw new dateIsExpired();

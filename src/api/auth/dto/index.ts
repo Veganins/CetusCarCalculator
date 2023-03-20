@@ -1,1 +1,2 @@
-export * from "./register.dto";
+export * from "./auth.registerUser.dto";
+export * from "./auth.signInUser.dto";

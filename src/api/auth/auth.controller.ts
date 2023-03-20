@@ -1,21 +1,41 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    HttpCode,
+    HttpStatus,
+    ParseBoolPipe,
+    Post,
+    Query,
+    Res,
+} from "@nestjs/common";
 import { ServisesAuthServise } from "src/service/auth/services.auth.service";
-import { RegisterDto } from "./dto";
+import { RegisterDto, SignInDto } from "./dto";
+import { SignInUserEntity } from "./entity/auth.signIn.entity";
 
 @Controller("auth")
 export class AuthController {
     constructor(private authService: ServisesAuthServise) {}
 
-    @Post("/signup")
+    @Post("/register-user")
     @HttpCode(HttpStatus.CREATED)
     async signup(@Body() dto: RegisterDto) {
         return await this.authService.signup(dto);
     }
+    //@Post("/sign-in")
+    //@HttpCode(HttpStatus.OK)
+    //async signIn(
+    //    @Body() signInData: SignInDto,
+    //    @Query("isInfiniteSessionLive", ParseBoolPipe) isInfiniteSessionLive: boolean,
+    //    @Res({ passthrough: true }) res: Response
+    //): Promise<SignInUserEntity> {
+    //    return await this.authService.signin({
+    //        isInfiniteSessionLive,
+    //        res,
+    //        signInUserData: signInData,
+    //    });
+    //}
     // @HttpCode(HttpStatus.OK)
-    // @Post("/signin")
-    // signin(@Body() dto: RegisterDto) {
-    //     return this.authService.signin(dto);
-    // }
+
     // @Post("/logout")
     // logout() {
     //     this.authService.logout();

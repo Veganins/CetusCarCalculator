@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import { ROLES_IDS_ENUM } from "src/seed/init/roles/idsEnums/rolesIds.enum";
 
 export class RepositoryUsersDataFactory {
     static password(password: string): Pick<Prisma.UserCreateInput, "password"> {
@@ -13,13 +12,13 @@ export class RepositoryUsersDataFactory {
             email,
         };
     }
-    static birthDate(birthDate: Date): Pick<Prisma.UserCreateInput, "birthDate"> {
+    static birthDate(birthDate: Date | null): Pick<Prisma.UserCreateInput, "birthDate"> {
         return {
             birthDate,
         };
     }
     static expirationDateDrivingLicense(
-        expirationDateDrivingLicense: Date
+        expirationDateDrivingLicense: Date | null
     ): Pick<Prisma.UserCreateInput, "expirationDateDrivingLicense"> {
         return {
             expirationDateDrivingLicense,
