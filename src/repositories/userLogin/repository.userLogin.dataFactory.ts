@@ -1,4 +1,4 @@
-import { Prisma, ROLE } from "@Prisma/client";
+import { Prisma } from "@Prisma/client";
 
 export class RepositoryUserLoginsDataFactory {
     static refreshToken(token: string): Pick<Prisma.UserLoginCreateInput, "refreshToken"> {

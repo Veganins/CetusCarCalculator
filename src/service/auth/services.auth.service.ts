@@ -1,9 +1,7 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from "argon2";
 import { Response } from "express";
-//import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { ConfigService } from "@nestjs/config";
 import { RegisterDto } from "src/api/auth/dto/auth.registerUser.dto";
 import { ServicesAuthValidator } from "./services.auth.validator";
 import { RepositoryUsersDataFactory } from "src/repositories/users/repository.users.dataFactory";
@@ -24,9 +22,15 @@ export class ServisesAuthServise {
     ) {}
     async signup(registerdata: RegisterDto): Promise<void> {
         //geanerate the password hash
-        console.log("przechodszi");
-        const { password, confirmpassword, email, birthDate, expirationDateDrivingLicense } =
-            registerdata;
+        const {
+            password,
+            confirmpassword,
+            email,
+            birthDate,
+            expirationDateDrivingLicense,
+            address,
+            phoneNumber,
+        } = registerdata;
         this.validator.passwordValidatorErrorHandler(password, confirmpassword);
         await this.validator.emailValidatorErrorHandler(email);
         this.validator.birthDateValidatorErrorHandler(birthDate);
@@ -42,6 +46,8 @@ export class ServisesAuthServise {
             ...RepositoryUsersDataFactory.expirationDateDrivingLicense(
                 expirationDateDrivingLicense
             ),
+            ...RepositoryUsersDataFactory.address(address),
+            ...RepositoryUsersDataFactory.phoneNumber(phoneNumber),
             ...RepositoryUsersDataFactory.setRoleToNormalUser(),
         };
         await this.usersRepository.create(createUserData);

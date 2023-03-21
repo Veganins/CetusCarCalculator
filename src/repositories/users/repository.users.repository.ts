@@ -1,5 +1,5 @@
-import { All, Injectable } from "@nestjs/common";
-import { Prisma, ROLE, User } from "@prisma/client";
+import { Injectable } from "@nestjs/common";
+import { Prisma, User } from "@prisma/client";
 import { isNullOrUndefined } from "is-what";
 import { UserNotFound } from "src/common/errors/404/userNotFound.error";
 import { PrismaService } from "src/prisma/prisma.service";

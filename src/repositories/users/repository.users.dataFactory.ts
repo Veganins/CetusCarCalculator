@@ -17,6 +17,16 @@ export class RepositoryUsersDataFactory {
             birthDate,
         };
     }
+    static phoneNumber(phoneNumber: string | null): Pick<Prisma.UserCreateInput, "phoneNumber"> {
+        return {
+            phoneNumber,
+        };
+    }
+    static address(address: string | null): Pick<Prisma.UserCreateInput, "address"> {
+        return {
+            address,
+        };
+    }
     static expirationDateDrivingLicense(
         expirationDateDrivingLicense: Date | null
     ): Pick<Prisma.UserCreateInput, "expirationDateDrivingLicense"> {
