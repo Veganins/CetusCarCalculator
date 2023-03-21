@@ -7,7 +7,8 @@ import { dateIsExpired } from "./errors/400/dateIsExpired.error";
 import { EmailNotUnique } from "./errors/400/emailNotUnique.error";
 import { NotAcceptAge } from "./errors/400/NotAcceptAge.error";
 import { PasswordsNotMatch } from "./errors/400/passwordsNotMatch.error";
-
+import * as argon from "argon2";
+import { InvalidSignInData } from "./errors/400/invalidLoginData.error";
 @Injectable()
 export class ServicesAuthValidator {
     constructor(private readonly usersRepository: RepositoryUsersRepository) {}
@@ -38,5 +39,9 @@ export class ServicesAuthValidator {
         } else {
             throw new dateIsExpired();
         }
+    }
+    async checkIfPasswordsMatch(hashedUserPassword: string, plainGivenPassword: string) {
+        const passwordMatch = await argon.verify(hashedUserPassword, plainGivenPassword);
+        if (!passwordMatch) throw new InvalidSignInData();
     }
 }

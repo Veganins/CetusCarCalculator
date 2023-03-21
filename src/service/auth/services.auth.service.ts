@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from "argon2";
+import { Response } from "express";
 //import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { ConfigService } from "@nestjs/config";
 import { RegisterDto } from "src/api/auth/dto/auth.registerUser.dto";
@@ -10,17 +11,20 @@ import { RepositoryUsersRepository } from "src/repositories/users/repository.use
 import { Prisma } from "@prisma/client";
 import { SignInUserEntity } from "src/api/auth/entity/auth.signIn.entity";
 import { SignInDto } from "src/api/auth/dto";
+import { RepositoryUsersFilterFactory } from "src/repositories/users/repository.users.filterFactory";
+import { ServicesAuthTokenService } from "./servises.auth.tokens.service";
 
 @Injectable()
 export class ServisesAuthServise {
     constructor(
         private readonly usersRepository: RepositoryUsersRepository,
         private prisma: PrismaService,
-        private config: ConfigService,
+        private readonly tokensService: ServicesAuthTokenService,
         private readonly validator: ServicesAuthValidator
     ) {}
     async signup(registerdata: RegisterDto): Promise<void> {
         //geanerate the password hash
+        console.log("przechodszi");
         const { password, confirmpassword, email, birthDate, expirationDateDrivingLicense } =
             registerdata;
         this.validator.passwordValidatorErrorHandler(password, confirmpassword);
@@ -42,19 +46,43 @@ export class ServisesAuthServise {
         };
         await this.usersRepository.create(createUserData);
     }
-    //async signin({
-    //    isInfiniteSessionLive,
-    //    res,
-    //    signInUserData,
-    //}: {
-    //    signInUserData: SignInDto;
-    //    isInfiniteSessionLive: boolean;
-    //    res: Response;
-    //}): Promise<SignInUserEntity> {
-    //    const { password, email } = signInUserData;
-    //    const where: Prisma.UserWhereUniqueInput = {};
-    //    return;
-    //} /*
+    async signin({
+        isInfiniteSessionLive,
+        res,
+        signInUserData,
+    }: {
+        signInUserData: SignInDto;
+        isInfiniteSessionLive: boolean;
+        res: Response;
+    }): Promise<SignInUserEntity> {
+        const { password, email } = signInUserData;
+        const where: Prisma.UserWhereUniqueInput = {
+            ...RepositoryUsersFilterFactory.email(email),
+        };
+        const user = await this.usersRepository.findUnique(where);
+        await this.validator.checkIfPasswordsMatch(user.password, password);
+        const accessToken = await this.tokensService.getAccessToken(
+            user.id,
+            user.roles,
+            isInfiniteSessionLive
+        );
+        const refreshToken = await this.tokensService.generateAndSaveNewUserRefreshToken({
+            userId: user.id,
+            roles: user.roles,
+            isInfiniteSessionLive,
+        });
+        const maxAge = this.tokensService.getCookieMaxAge(isInfiniteSessionLive);
+
+        res.cookie("refreshToken", refreshToken, {
+            maxAge: maxAge,
+            secure: true,
+            httpOnly: true,
+            sameSite: "lax",
+            domain: process.env.COOKIE_DOMAIN,
+        });
+
+        return new SignInUserEntity({ accessToken });
+    }
     //async signToken(userId: number, email: string): Promise<{ access_token: string }> {
     //    const payload = {
     //        sub: userId,

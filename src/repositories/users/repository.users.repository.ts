@@ -1,5 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma, User } from "@prisma/client";
+import { All, Injectable } from "@nestjs/common";
+import { Prisma, ROLE, User } from "@prisma/client";
+import { isNullOrUndefined } from "is-what";
+import { UserNotFound } from "src/common/errors/404/userNotFound.error";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -19,5 +21,17 @@ export class RepositoryUsersRepository {
             },
         });
         return count._all;
+    }
+    async findUnique(where: Prisma.UserWhereUniqueInput) {
+        const user = await this.prisma.user.findUnique({
+            where,
+            select: {
+                id: true,
+                password: true,
+                roles: true,
+            },
+        });
+        if (isNullOrUndefined(user)) throw new UserNotFound();
+        return user;
     }
 }
