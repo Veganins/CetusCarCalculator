@@ -1,12 +1,12 @@
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { AuthModule } from "./api/auth/auth.module";
+import { AuthUserModule } from "./api/auth/User/auth.user.module";
 
 import { PrismaModule } from "./prisma/prisma.module";
 
 @Module({
     imports: [
-        AuthModule,
+        AuthUserModule,
         PrismaModule,
         ConfigModule.forRoot({
             isGlobal: true,

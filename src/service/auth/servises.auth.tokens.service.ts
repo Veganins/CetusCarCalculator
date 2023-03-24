@@ -4,7 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Prisma, ROLE } from "@prisma/client";
 import { randomBytes } from "crypto";
 import { add } from "date-fns";
-import { RepositoryUserLoginsRepository } from "src/repositories/userLogin/repository,userLogin.Repository";
+import { RepositoryUserLoginsRepository } from "src/repositories/userLogin/repository.userLogin.Repository";
 import { RepositoryUserLoginsDataFactory } from "src/repositories/userLogin/repository.userLogin.dataFactory";
 import { JwtPayload } from "src/types/jwtPayload.type";
 

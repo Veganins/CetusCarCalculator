@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { RepositoryUserLoginsRepository } from "./repository,userLogin.Repository";
+import { RepositoryUserLoginsRepository } from "./repository.userLogin.Repository";
 
 @Module({
     providers: [RepositoryUserLoginsRepository],

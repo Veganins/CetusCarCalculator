@@ -1,22 +1,25 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
 import * as argon from "argon2";
 import { Response } from "express";
-import { RegisterDto } from "src/api/auth/dto/auth.registerUser.dto";
+import { RegisterDto } from "src/api/auth/User/dto/auth.registerUser.dto";
 import { ServicesAuthValidator } from "./services.auth.validator";
 import { RepositoryUsersDataFactory } from "src/repositories/users/repository.users.dataFactory";
 import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
 import { Prisma } from "@prisma/client";
-import { SignInUserEntity } from "src/api/auth/entity/auth.signIn.entity";
-import { SignInDto } from "src/api/auth/dto";
+import { SignInUserEntity } from "src/api/auth/User/entity/auth.signIn.entity";
+import { SignInDto } from "src/api/auth/User/dto";
 import { RepositoryUsersFilterFactory } from "src/repositories/users/repository.users.filterFactory";
 import { ServicesAuthTokenService } from "./servises.auth.tokens.service";
+import { RepositoryUserLoginsDataFactory } from "src/repositories/userLogin/repository.userLogin.dataFactory";
+import { RepositoryUserLoginsRepository } from "src/repositories/userLogin/repository.userLogin.Repository";
+import { AccessTokenEntity } from "src/api/auth/User/entity/auth.accessTockenEntity";
+import { RepositoryUserLoginsFilterFactory } from "src/repositories/userLogin/repository.userLogins.filterFactory";
 
 @Injectable()
 export class ServisesAuthServise {
     constructor(
         private readonly usersRepository: RepositoryUsersRepository,
-        private prisma: PrismaService,
+        private readonly repositoryUserLoginsRepository: RepositoryUserLoginsRepository,
         private readonly tokensService: ServicesAuthTokenService,
         private readonly validator: ServicesAuthValidator
     ) {}
@@ -89,20 +92,47 @@ export class ServisesAuthServise {
 
         return new SignInUserEntity({ accessToken });
     }
-    //async signToken(userId: number, email: string): Promise<{ access_token: string }> {
-    //    const payload = {
-    //        sub: userId,
-    //        email,
-    //    };
-    //    const secret = this.config.get("JWT_SECRET");
-    //    const token = await this.jwt.signAsync(payload, {
-    //        expiresIn: "15m",
-    //        secret: secret,
-    //    });
-    //    return {
-    //        access_token: token,
-    //    };
-    //}
-    //logout() {}
-    //refresh() {}*/
+    async logoutUser(refreshToken: string): Promise<void> {
+        console.log(refreshToken);
+
+        const where: Prisma.UserLoginWhereUniqueInput = {
+            ...RepositoryUserLoginsFilterFactory.refreshToken(refreshToken),
+        };
+        await this.repositoryUserLoginsRepository.delete(where);
+    }
+
+    async refreshToken(refreshToken: string, res: Response): Promise<AccessTokenEntity> {
+        const where: Prisma.UserLoginWhereUniqueInput = {
+            ...RepositoryUserLoginsFilterFactory.refreshToken(refreshToken),
+        };
+        console.log("===============");
+
+        console.log(refreshToken);
+
+        const session = await this.repositoryUserLoginsRepository.findUnique(where);
+        console.log(session);
+        const accessToken = await this.tokensService.getAccessToken(
+            session.id,
+            session.roles,
+            true
+        );
+        console.log(accessToken);
+
+        const newRefreshToken = await this.tokensService.generateAndSaveNewUserRefreshToken({
+            userId: session.userId,
+            roles: session.roles,
+        });
+
+        const cookieMaxAge = this.tokensService.getCookieMaxAge(false);
+
+        res.cookie("refreshToken", newRefreshToken, {
+            maxAge: cookieMaxAge,
+            secure: true,
+            httpOnly: true,
+            sameSite: "lax",
+            domain: process.env.COOKIE_DOMAIN,
+        });
+
+        return new AccessTokenEntity({ accessToken: accessToken });
+    }
 }
