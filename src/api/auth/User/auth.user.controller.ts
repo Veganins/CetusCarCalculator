@@ -15,6 +15,7 @@ import { SignInUserEntity } from "./entity/auth.signIn.entity";
 import { Request, Response } from "express";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AccessTokenEntity } from "./entity/auth.accessTockenEntity";
+import { Public } from "src/common/decorator/public.decorator";
 
 @Controller("auth")
 @ApiTags("Auth")
@@ -23,10 +24,11 @@ export class AuthUserController {
     @ApiOperation({ summary: "Create user account and sign in" })
     @ApiResponse({ type: SignInUserEntity })
     @Post("/register-user")
+    @Public()
     @HttpCode(HttpStatus.CREATED)
     async registerUser(
         @Body() registrationData: RegisterDto,
-        @Query() isInfiniteSessionLive: boolean,
+        @Query("isInfiniteSessionLive", ParseBoolPipe) isInfiniteSessionLive: boolean,
         @Res({ passthrough: true }) res: Response
     ): Promise<SignInUserEntity> {
         await this.authService.signup(registrationData);
@@ -39,10 +41,11 @@ export class AuthUserController {
     @ApiOperation({ summary: "Sign in" })
     @ApiResponse({ type: SignInUserEntity })
     @Post("/sign-in")
+    @Public()
     @HttpCode(HttpStatus.OK)
     async signIn(
         @Body() signInData: SignInDto,
-        @Query() isInfiniteSessionLive: boolean,
+        @Query("isInfiniteSessionLive", ParseBoolPipe) isInfiniteSessionLive: boolean,
         @Res({ passthrough: true }) res: Response
     ): Promise<SignInUserEntity> {
         return await this.authService.signin({
@@ -59,7 +62,7 @@ export class AuthUserController {
     async logout(@Req() request: Request): Promise<unknown> {
         return this.authService.logoutUser(request?.cookies?.refreshToken);
     }
-
+    @Public()
     @Post("refresh-token")
     @ApiOperation({ summary: "Return new token" })
     @ApiResponse({ type: AccessTokenEntity })

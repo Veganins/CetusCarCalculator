@@ -105,18 +105,13 @@ export class ServisesAuthServise {
         const where: Prisma.UserLoginWhereUniqueInput = {
             ...RepositoryUserLoginsFilterFactory.refreshToken(refreshToken),
         };
-        console.log("===============");
-
-        console.log(refreshToken);
 
         const session = await this.repositoryUserLoginsRepository.findUnique(where);
-        console.log(session);
         const accessToken = await this.tokensService.getAccessToken(
             session.id,
             session.roles,
             true
         );
-        console.log(accessToken);
 
         const newRefreshToken = await this.tokensService.generateAndSaveNewUserRefreshToken({
             userId: session.userId,
