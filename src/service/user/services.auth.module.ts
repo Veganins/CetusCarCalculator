@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { RepositoryUserLoginsModule } from "src/repositories/userLogin/repository.userLogin.module";
-import { RepositoryUsersModule } from "src/repositories/users/repository.users.module";
+import { RepositoryUserLoginsModule } from "src/repositories/Auth/userLogin/repository.userLogin.module";
+import { RepositoryUsersModule } from "src/repositories/Auth/users/repository.users.module";
 import { ServisesAuthServise } from "./services.auth.service";
 import { ServicesAuthValidator } from "./services.auth.validator";
 import { ServicesAuthTokenService } from "./servises.auth.tokens.service";

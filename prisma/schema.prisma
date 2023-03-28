@@ -8,37 +8,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Brand {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
 model Car {
-  id              Int       @id @default(autoincrement())
-  carModelId      Int
+  id              Int        @id @default(autoincrement())
   carMileage      Float
   dayRentalPrice  Float
   fuelConsumption Int
   startrentalDate DateTime?
   overRentalDate  DateTime?
   carStatus       CARSTATUS
-  carModel        CarModel  @relation("CarToCarModel", fields: [carModelId], references: [id])
-  rental          Rental[]  @relation("CarToRental")
+  carModel        CarModel[] @relation("CarToCarModel")
+  rental          Rental[]   @relation("CarToRental")
 }
 
 model CarModel {
   id            Int           @id @default(autoincrement())
-  barndId       Int
-  count         Int
   model         String
   priceCategory PRICECATEGORY
-  car           Car[]         @relation("CarToCarModel")
-  barnd         Barnd         @relation("BarndToCarModel", fields: [barndId], references: [id])
-}
-
-model Barnd {
-  id       Int        @id
-  carModel CarModel[] @relation("BarndToCarModel")
+  barnd         String
+  carModelId    Int
+  car           Car           @relation("CarToCarModel", fields: [carModelId], references: [id])
 }
 
 model Rental {

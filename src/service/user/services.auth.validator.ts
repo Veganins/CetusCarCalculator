@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { compareAsc, differenceInCalendarDays, differenceInDays } from "date-fns";
-import { RepositoryUsersFilterFactory } from "src/repositories/users/repository.users.filterFactory";
-import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
-import { dateIsExpired } from "./errors/400/dateIsExpired.error";
+import * as argon from "argon2";
+import { PasswordsNotMatch } from "./errors/400/passwordsNotMatch.error";
 import { EmailNotUnique } from "./errors/400/emailNotUnique.error";
 import { NotAcceptAge } from "./errors/400/NotAcceptAge.error";
-import { PasswordsNotMatch } from "./errors/400/passwordsNotMatch.error";
-import * as argon from "argon2";
+import { dateIsExpired } from "./errors/400/dateIsExpired.error";
 import { InvalidSignInData } from "./errors/400/invalidLoginData.error";
+import { RepositoryUsersFilterFactory } from "src/repositories/Auth/users/repository.users.filterFactory";
+import { RepositoryUsersRepository } from "src/repositories/Auth/users/repository.users.repository";
 @Injectable()
 export class ServicesAuthValidator {
     constructor(private readonly usersRepository: RepositoryUsersRepository) {}

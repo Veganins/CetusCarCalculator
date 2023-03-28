@@ -9,13 +9,13 @@ import {
     Req,
     Res,
 } from "@nestjs/common";
-import { ServisesAuthServise } from "src/service/auth/services.auth.service";
 import { RegisterDto, SignInDto } from "./dto";
 import { SignInUserEntity } from "./entity/auth.signIn.entity";
 import { Request, Response } from "express";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AccessTokenEntity } from "./entity/auth.accessTockenEntity";
 import { Public } from "src/common/decorator/public.decorator";
+import { ServisesAuthServise } from "src/service/user/services.auth.service";
 
 @Controller("auth")
 @ApiTags("Auth")
@@ -59,8 +59,8 @@ export class AuthUserController {
     @Post("logout")
     @ApiBearerAuth()
     @HttpCode(HttpStatus.OK)
-    async logout(@Req() request: Request): Promise<unknown> {
-        return this.authService.logoutUser(request?.cookies?.refreshToken);
+    async logout(@Req() request: Request, @Res({ passthrough: true }) res: Response) {
+        return this.authService.logoutUser(request?.cookies?.refreshToken, res);
     }
     @Public()
     @Post("refresh-token")

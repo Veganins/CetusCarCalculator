@@ -1,19 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import * as argon from "argon2";
 import { Response } from "express";
-import { RegisterDto } from "src/api/auth/User/dto/auth.registerUser.dto";
 import { ServicesAuthValidator } from "./services.auth.validator";
-import { RepositoryUsersDataFactory } from "src/repositories/users/repository.users.dataFactory";
-import { RepositoryUsersRepository } from "src/repositories/users/repository.users.repository";
 import { Prisma } from "@prisma/client";
-import { SignInUserEntity } from "src/api/auth/User/entity/auth.signIn.entity";
-import { SignInDto } from "src/api/auth/User/dto";
-import { RepositoryUsersFilterFactory } from "src/repositories/users/repository.users.filterFactory";
 import { ServicesAuthTokenService } from "./servises.auth.tokens.service";
-import { RepositoryUserLoginsDataFactory } from "src/repositories/userLogin/repository.userLogin.dataFactory";
-import { RepositoryUserLoginsRepository } from "src/repositories/userLogin/repository.userLogin.Repository";
-import { AccessTokenEntity } from "src/api/auth/User/entity/auth.accessTockenEntity";
-import { RepositoryUserLoginsFilterFactory } from "src/repositories/userLogin/repository.userLogins.filterFactory";
+import { RepositoryUserLoginsRepository } from "src/repositories/Auth/userLogin/repository.userLogin.Repository";
+import { RepositoryUserLoginsFilterFactory } from "src/repositories/Auth/userLogin/repository.userLogins.filterFactory";
+import { RegisterDto } from "src/api/public/auth/dto/auth.registerUser.dto";
+import { SignInDto } from "src/api/public/auth/dto/auth.signInUser.dto";
+import { SignInUserEntity } from "src/api/public/auth/entity/auth.signIn.entity";
+import { AccessTokenEntity } from "src/api/public/auth/entity/auth.accessTockenEntity";
+import { RepositoryUsersDataFactory } from "src/repositories/Auth/users/repository.users.dataFactory";
+import { RepositoryUsersFilterFactory } from "src/repositories/Auth/users/repository.users.filterFactory";
+import { RepositoryUsersRepository } from "src/repositories/Auth/users/repository.users.repository";
 
 @Injectable()
 export class ServisesAuthServise {
@@ -84,7 +83,6 @@ export class ServisesAuthServise {
 
         res.cookie("refreshToken", refreshToken, {
             maxAge: maxAge,
-            secure: true,
             httpOnly: true,
             sameSite: "lax",
             domain: process.env.COOKIE_DOMAIN,
@@ -92,13 +90,15 @@ export class ServisesAuthServise {
 
         return new SignInUserEntity({ accessToken });
     }
-    async logoutUser(refreshToken: string): Promise<void> {
+    async logoutUser(refreshToken: string, res: Response): Promise<void> {
         console.log(refreshToken);
 
         const where: Prisma.UserLoginWhereUniqueInput = {
             ...RepositoryUserLoginsFilterFactory.refreshToken(refreshToken),
         };
+
         await this.repositoryUserLoginsRepository.delete(where);
+        res.clearCookie("refreshToken");
     }
 
     async refreshToken(refreshToken: string, res: Response): Promise<AccessTokenEntity> {
@@ -122,7 +122,6 @@ export class ServisesAuthServise {
 
         res.cookie("refreshToken", newRefreshToken, {
             maxAge: cookieMaxAge,
-            secure: true,
             httpOnly: true,
             sameSite: "lax",
             domain: process.env.COOKIE_DOMAIN,

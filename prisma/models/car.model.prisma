@@ -1,12 +1,11 @@
 model Car{
     id  Int  @id  @default(autoincrement())
-    carModelId Int
     carMileage Float
     dayRentalPrice Float
     fuelConsumption Int
-    carModel CarModel @relation(fields: [carModelId],references: [id])
     startrentalDate DateTime?
     overRentalDate DateTime?
+    carModel CarModel[] 
     carStatus CARSTATUS
 }
 enum CARSTATUS {
@@ -16,5 +15,6 @@ enum CARSTATUS {
 
 model CarModel{
     id Int @id
-    car Car[] 
+    carModelId Int
+    car Car @relation(fields: [carModelId],references: [id])
 }

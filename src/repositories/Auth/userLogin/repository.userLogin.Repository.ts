@@ -9,8 +9,6 @@ export class RepositoryUserLoginsRepository {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(data: Prisma.UserLoginCreateInput): Promise<UserLogin> {
-        console.log(data);
-
         return await this.prisma.userLogin.create({ data });
     }
     async findUnique(where: Prisma.UserLoginWhereUniqueInput) {

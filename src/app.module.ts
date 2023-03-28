@@ -2,8 +2,7 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { join } from "path";
-import { AuthUserModule } from "./api/auth/User/auth.user.module";
-import { AuthModule } from "./api/auth/User/strategies/auth.module";
+import { ApiModule } from "./api/api.module";
 import { AtGuard } from "./common/guards/at.guard";
 import { isTokenActiveGuard } from "./common/guards/isTokenActive.guard";
 
@@ -24,8 +23,7 @@ import { PrismaModule } from "./prisma/prisma.module";
             ],
         }),
 
-        AuthModule,
-        AuthUserModule,
+        ApiModule,
         PrismaModule,
         ConfigModule.forRoot({
             isGlobal: true,

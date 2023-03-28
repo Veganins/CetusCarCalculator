@@ -1,10 +1,8 @@
 model CarModel{
     id Int @id @default(autoincrement())
-    barndId Int
-    count Int 
     model String
     priceCategory PRICECATEGORY
-    barnd Barnd @relation(fields: [barndId],references: [id])
+    barnd String
 }
 enum PRICECATEGORY {
     BASIC 
@@ -12,7 +10,4 @@ enum PRICECATEGORY {
     MEDIUM 
     PREMIUM
 }
-model Barnd{
-    id Int @id
-    carModel CarModel[]
-}
+

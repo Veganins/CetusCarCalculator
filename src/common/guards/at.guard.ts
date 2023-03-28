@@ -17,6 +17,7 @@ export class AtGuard extends AuthGuard("jwt") {
         if (isPublic) return true;
 
         const request = context.switchToHttp().getRequest();
+
         const isSetBarrierToken = request.headers?.authorization !== undefined;
         if (!isSetBarrierToken)
             throw new UnauthorizedException(
