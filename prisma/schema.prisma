@@ -9,15 +9,16 @@ datasource db {
 }
 
 model Car {
-  id              Int        @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   carMileage      Float
   dayRentalPrice  Float
   fuelConsumption Int
   startrentalDate DateTime?
   overRentalDate  DateTime?
   carStatus       CARSTATUS
-  carModel        CarModel[] @relation("CarToCarModel")
-  rental          Rental[]   @relation("CarToRental")
+  carModelId      Int?
+  carModel        CarModel? @relation("CarToCarModel", fields: [carModelId], references: [id])
+  rental          Rental[]  @relation("CarToRental")
 }
 
 model CarModel {
@@ -25,8 +26,7 @@ model CarModel {
   model         String
   priceCategory PRICECATEGORY
   barnd         String
-  carModelId    Int
-  car           Car           @relation("CarToCarModel", fields: [carModelId], references: [id])
+  cars          Car[]         @relation("CarToCarModel")
 }
 
 model Rental {

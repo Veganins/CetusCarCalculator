@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { PRICECATEGORY } from "@prisma/client";
 import { Transform } from "class-transformer";
 import { IsNotEmpty, IsString } from "class-validator";
-import { stringToEnumTransform } from "src/common/transform/stringToEnum.Transform";
+import { stringToEnumTransform } from "src/common/transform/stringToEnum/stringToEnum.PRICECATEGORY.Transform";
 
 export class CarModelDto {
     @ApiProperty()

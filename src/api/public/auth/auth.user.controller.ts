@@ -15,7 +15,7 @@ import { Request, Response } from "express";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { AccessTokenEntity } from "./entity/auth.accessTockenEntity";
 import { Public } from "src/common/decorator/public.decorator";
-import { ServisesAuthServise } from "src/service/user/services.auth.service";
+import { ServisesAuthServise } from "src/service/public/user/services.auth.service";
 
 @Controller("auth")
 @ApiTags("Auth")

@@ -8,8 +8,6 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class RepositoryUsersRepository {
     constructor(private prisma: PrismaService) {}
     async create(data: Prisma.UserCreateInput): Promise<User> {
-        console.log(data);
-
         return await this.prisma.user.create({ data });
     }
 

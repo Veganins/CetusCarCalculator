@@ -4,8 +4,8 @@ import { JwtService } from "@nestjs/jwt";
 import { Prisma, ROLE } from "@prisma/client";
 import { randomBytes } from "crypto";
 import { add } from "date-fns";
-import { RepositoryUserLoginsRepository } from "src/repositories/Auth/userLogin/repository.userLogin.Repository";
-import { RepositoryUserLoginsDataFactory } from "src/repositories/Auth/userLogin/repository.userLogin.dataFactory";
+import { RepositoryUserLoginsDataFactory } from "src/repositories/Public/Auth/userLogin/repository.userLogin.dataFactory";
+import { RepositoryUserLoginsRepository } from "src/repositories/Public/Auth/userLogin/repository.userLogin.Repository";
 import { JwtPayload } from "src/types/jwtPayload.type";
 
 @Injectable()

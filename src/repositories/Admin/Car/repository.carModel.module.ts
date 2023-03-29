@@ -5,4 +5,4 @@ import { RepositoryCarModelRepository } from "./repository.carModel.Repository";
     providers: [RepositoryCarModelRepository],
     exports: [RepositoryCarModelRepository],
 })
-export class RepositoryUserLoginsModule {}
+export class RepositoryCarModelModule {}

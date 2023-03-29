@@ -5,16 +5,10 @@ model Car{
     fuelConsumption Int
     startrentalDate DateTime?
     overRentalDate DateTime?
-    carModel CarModel[] 
     carStatus CARSTATUS
 }
+
 enum CARSTATUS {
     REPAIRING
     AVAILABLE
-}
-
-model CarModel{
-    id Int @id
-    carModelId Int
-    car Car @relation(fields: [carModelId],references: [id])
 }

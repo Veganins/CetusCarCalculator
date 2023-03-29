@@ -1,7 +1,7 @@
 import { BadRequestException } from "@nestjs/common";
 import { PRICECATEGORY } from "@prisma/client";
 import { TransformFnParams } from "class-transformer";
-import { BadDateValueError } from "../errors/400/badDateValue.error";
+import { BadEnumValueError } from "../../errors/400/badEnumValue.error ";
 
 export function stringToEnumTransform(
     transformData: TransformFnParams
@@ -11,6 +11,6 @@ export function stringToEnumTransform(
     const editableValue = transformData.obj[Keyname];
     if (typeof editableValue !== "string")
         throw new BadRequestException(`${Keyname} is not string`);
-    if (!(editableValue in PRICECATEGORY)) throw new BadDateValueError(`${editableValue}`);
+    if (!(editableValue in PRICECATEGORY)) throw new BadEnumValueError(`${editableValue}`);
     return transformData.obj[Keyname];
 }

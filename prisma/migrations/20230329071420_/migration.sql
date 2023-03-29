@@ -11,17 +11,8 @@ CREATE TYPE "RENTALSTATUS" AS ENUM ('LASTS', 'CANCELLED', 'COMPLETED');
 CREATE TYPE "ROLE" AS ENUM ('USER', 'GLOBAL_ADMIN');
 
 -- CreateTable
-CREATE TABLE "Brand" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Brand_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Car" (
     "id" SERIAL NOT NULL,
-    "carModelId" INTEGER NOT NULL,
     "carMileage" DOUBLE PRECISION NOT NULL,
     "dayRentalPrice" DOUBLE PRECISION NOT NULL,
     "fuelConsumption" INTEGER NOT NULL,
@@ -35,19 +26,12 @@ CREATE TABLE "Car" (
 -- CreateTable
 CREATE TABLE "CarModel" (
     "id" SERIAL NOT NULL,
-    "barndId" INTEGER NOT NULL,
-    "count" INTEGER NOT NULL,
+    "carModelId" INTEGER NOT NULL,
     "model" TEXT NOT NULL,
     "priceCategory" "PRICECATEGORY" NOT NULL,
+    "barnd" TEXT NOT NULL,
 
     CONSTRAINT "CarModel_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Barnd" (
-    "id" INTEGER NOT NULL,
-
-    CONSTRAINT "Barnd_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -100,11 +84,11 @@ CREATE TABLE "UserLogin" (
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
--- AddForeignKey
-ALTER TABLE "Car" ADD CONSTRAINT "Car_carModelId_fkey" FOREIGN KEY ("carModelId") REFERENCES "CarModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "UserLogin_refreshToken_key" ON "UserLogin"("refreshToken");
 
 -- AddForeignKey
-ALTER TABLE "CarModel" ADD CONSTRAINT "CarModel_barndId_fkey" FOREIGN KEY ("barndId") REFERENCES "Barnd"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CarModel" ADD CONSTRAINT "CarModel_carModelId_fkey" FOREIGN KEY ("carModelId") REFERENCES "Car"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Rental" ADD CONSTRAINT "Rental_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

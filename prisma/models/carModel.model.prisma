@@ -3,11 +3,19 @@ model CarModel{
     model String
     priceCategory PRICECATEGORY
     barnd String
+    cars Car[]
+
 }
 enum PRICECATEGORY {
     BASIC 
     STANDARD 
     MEDIUM 
     PREMIUM
+}
+
+model Car{
+    id Int @id
+    carModelId Int?
+    carModel CarModel? @relation(fields: [carModelId],references: [id])
 }
 

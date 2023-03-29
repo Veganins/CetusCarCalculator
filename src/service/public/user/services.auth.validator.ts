@@ -7,8 +7,8 @@ import { EmailNotUnique } from "./errors/400/emailNotUnique.error";
 import { NotAcceptAge } from "./errors/400/NotAcceptAge.error";
 import { dateIsExpired } from "./errors/400/dateIsExpired.error";
 import { InvalidSignInData } from "./errors/400/invalidLoginData.error";
-import { RepositoryUsersFilterFactory } from "src/repositories/Auth/users/repository.users.filterFactory";
-import { RepositoryUsersRepository } from "src/repositories/Auth/users/repository.users.repository";
+import { RepositoryUsersFilterFactory } from "src/repositories/Public/Auth/users/repository.users.filterFactory";
+import { RepositoryUsersRepository } from "src/repositories/Public/Auth/users/repository.users.repository";
 @Injectable()
 export class ServicesAuthValidator {
     constructor(private readonly usersRepository: RepositoryUsersRepository) {}

@@ -4,15 +4,15 @@ import { Response } from "express";
 import { ServicesAuthValidator } from "./services.auth.validator";
 import { Prisma } from "@prisma/client";
 import { ServicesAuthTokenService } from "./servises.auth.tokens.service";
-import { RepositoryUserLoginsRepository } from "src/repositories/Auth/userLogin/repository.userLogin.Repository";
-import { RepositoryUserLoginsFilterFactory } from "src/repositories/Auth/userLogin/repository.userLogins.filterFactory";
 import { RegisterDto } from "src/api/public/auth/dto/auth.registerUser.dto";
 import { SignInDto } from "src/api/public/auth/dto/auth.signInUser.dto";
 import { SignInUserEntity } from "src/api/public/auth/entity/auth.signIn.entity";
 import { AccessTokenEntity } from "src/api/public/auth/entity/auth.accessTockenEntity";
-import { RepositoryUsersDataFactory } from "src/repositories/Auth/users/repository.users.dataFactory";
-import { RepositoryUsersFilterFactory } from "src/repositories/Auth/users/repository.users.filterFactory";
-import { RepositoryUsersRepository } from "src/repositories/Auth/users/repository.users.repository";
+import { RepositoryUserLoginsRepository } from "src/repositories/Public/Auth/userLogin/repository.userLogin.Repository";
+import { RepositoryUserLoginsFilterFactory } from "src/repositories/Public/Auth/userLogin/repository.userLogins.filterFactory";
+import { RepositoryUsersDataFactory } from "src/repositories/Public/Auth/users/repository.users.dataFactory";
+import { RepositoryUsersFilterFactory } from "src/repositories/Public/Auth/users/repository.users.filterFactory";
+import { RepositoryUsersRepository } from "src/repositories/Public/Auth/users/repository.users.repository";
 
 @Injectable()
 export class ServisesAuthServise {
