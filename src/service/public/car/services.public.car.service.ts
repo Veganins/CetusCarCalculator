@@ -16,7 +16,7 @@ export class ServisesPublicCarServise {
             startrentalDate,
             overRentalDate,
         } = carData;
-        const modelId = await this.carRepository.findCarModel(model);
+        const models = await this.carRepository.findCarModel(model);
 
         const createCarData: Prisma.CarCreateInput = {
             ...RepositoryCarDataFactory.carMileage(carMileage),
@@ -24,7 +24,7 @@ export class ServisesPublicCarServise {
             ...RepositoryCarDataFactory.fuelConsumption(fuelConsumption),
             ...RepositoryCarDataFactory.startrentalDate(startrentalDate),
             ...RepositoryCarDataFactory.overRentalDate(overRentalDate),
-            ...RepositoryCarDataFactory.modelId(modelId.id),
+            ...RepositoryCarDataFactory.model(models.id),
             ...RepositoryCarDataFactory.setcarStatusToAVAILABLE(),
         };
 

@@ -27,7 +27,7 @@ export class RepositoryCarDataFactory {
             overRentalDate,
         };
     }
-    static modelId(modelId: number): Pick<Prisma.CarCreateInput, "carModel"> {
+    static model(modelId: number): Pick<Prisma.CarCreateInput, "carModel"> {
         return {
             carModel: {
                 connect: {
@@ -36,6 +36,7 @@ export class RepositoryCarDataFactory {
             },
         };
     }
+
     static setcarStatusToAVAILABLE(): Pick<Prisma.CarCreateInput, "carStatus"> {
         return {
             carStatus: "AVAILABLE",
