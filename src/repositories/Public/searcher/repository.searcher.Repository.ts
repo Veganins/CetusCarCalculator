@@ -9,16 +9,14 @@ export class RepositorySearcherRepository {
         maxcarMileage: number,
         maxdayRentalPrice: number,
         maxfuelConsumption: number,
-        brand: string,
         model: string
     ): Promise<CarRentEntity> {
         const findModel = await this.prisma.carModel.findFirst({
             where: {
                 model,
-                barnd: brand,
             },
         });
-        const find = await this.prisma.car.findMany({
+        const findsCar = await this.prisma.car.findMany({
             where: {
                 carMileage: { lt: maxcarMileage },
                 dayRentalPrice: { lt: maxdayRentalPrice },
@@ -28,7 +26,10 @@ export class RepositorySearcherRepository {
         });
 
         return new CarRentEntity({
-            wh,
+            car: findsCar,
+            priceCategory: findModel.priceCategory,
+            brand: findModel.barnd,
+            model: findModel.model,
         });
     }
 }

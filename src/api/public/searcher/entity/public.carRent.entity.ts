@@ -1,13 +1,12 @@
 import { ApiHideProperty, ApiProperty } from "@nestjs/swagger";
-import { Car, CARSTATUS, PRICECATEGORY } from "@prisma/client";
+import { Car, CarModel, CARSTATUS, PRICECATEGORY } from "@prisma/client";
 import { Exclude, Expose } from "class-transformer";
 
 @Exclude()
 export class CarRentEntity {
     @Expose()
     @ApiProperty()
-    carModel: Car[];
-
+    car: Car[];
     // @Expose()
     // @ApiProperty()
     // id: number[];

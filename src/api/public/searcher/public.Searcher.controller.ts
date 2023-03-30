@@ -11,7 +11,7 @@ export class PublicSearcherController {
     constructor(private searcherCarModuleService: ServisesPublicSearcherServise) {}
     @ApiOperation({ summary: "Search the car" })
     @Post("/searcher-car")
-    async search(@Body() searchData: SearcherDto): Promise<CarRentEntity[]> {
+    async search(@Body() searchData: SearcherDto): Promise<CarRentEntity> {
         return await this.searcherCarModuleService.search(searchData);
     }
 }
