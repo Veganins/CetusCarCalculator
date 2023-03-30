@@ -7,7 +7,7 @@ import { ServicesAuthTokenService } from "./servises.auth.tokens.service";
 import { RegisterDto } from "src/api/public/auth/dto/auth.registerUser.dto";
 import { SignInDto } from "src/api/public/auth/dto/auth.signInUser.dto";
 import { SignInUserEntity } from "src/api/public/auth/entity/auth.signIn.entity";
-import { AccessTokenEntity } from "src/api/public/auth/entity/auth.accessTockenEntity";
+import { AccessTokenEntity } from "src/api/public/auth/entity/auth.accessTocken.entity";
 import { RepositoryUserLoginsRepository } from "src/repositories/Public/Auth/userLogin/repository.userLogin.Repository";
 import { RepositoryUserLoginsFilterFactory } from "src/repositories/Public/Auth/userLogin/repository.userLogins.filterFactory";
 import { RepositoryUsersDataFactory } from "src/repositories/Public/Auth/users/repository.users.dataFactory";

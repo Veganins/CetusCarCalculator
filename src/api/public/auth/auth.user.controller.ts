@@ -13,7 +13,7 @@ import { RegisterDto, SignInDto } from "./dto";
 import { SignInUserEntity } from "./entity/auth.signIn.entity";
 import { Request, Response } from "express";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { AccessTokenEntity } from "./entity/auth.accessTockenEntity";
+import { AccessTokenEntity } from "./entity/auth.accessTocken.entity";
 import { Public } from "src/common/decorator/public.decorator";
 import { ServisesAuthServise } from "src/service/public/user/services.auth.service";
 
