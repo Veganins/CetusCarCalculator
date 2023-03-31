@@ -30,6 +30,7 @@ export class ServisesAuthServise {
             email,
             birthDate,
             expirationDateDrivingLicense,
+            getDrivingLicense,
             address,
             phoneNumber,
         } = registerdata;
@@ -48,6 +49,7 @@ export class ServisesAuthServise {
             ...RepositoryUsersDataFactory.expirationDateDrivingLicense(
                 expirationDateDrivingLicense
             ),
+            ...RepositoryUsersDataFactory.getDrivingLicense(getDrivingLicense),
             ...RepositoryUsersDataFactory.address(address),
             ...RepositoryUsersDataFactory.phoneNumber(phoneNumber),
             ...RepositoryUsersDataFactory.setRoleToNormalUser(),

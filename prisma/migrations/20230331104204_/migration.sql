@@ -19,39 +19,33 @@ CREATE TABLE "Car" (
     "startrentalDate" TIMESTAMP(3),
     "overRentalDate" TIMESTAMP(3),
     "carStatus" "CARSTATUS" NOT NULL,
+    "carModelId" INTEGER,
 
     CONSTRAINT "Car_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "CarModel" (
-    "id" SERIAL NOT NULL,
-    "carModelId" INTEGER NOT NULL,
-    "model" TEXT NOT NULL,
-    "priceCategory" "PRICECATEGORY" NOT NULL,
-    "barnd" TEXT NOT NULL,
-
-    CONSTRAINT "CarModel_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Rental" (
     "id" SERIAL NOT NULL,
-    "employeeId" INTEGER NOT NULL,
-    "carId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "carId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "status" "RENTALSTATUS" NOT NULL,
+    "dateEndRental" TIMESTAMP(3) NOT NULL,
+    "dateStartRental" TIMESTAMP(3) NOT NULL,
+    "UserId" INTEGER,
 
     CONSTRAINT "Rental_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Employee" (
-    "id" INTEGER NOT NULL,
+CREATE TABLE "CarModel" (
+    "id" SERIAL NOT NULL,
+    "model" TEXT NOT NULL,
+    "priceCategory" "PRICECATEGORY" NOT NULL,
+    "barnd" TEXT NOT NULL,
 
-    CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "CarModel_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -88,16 +82,13 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "UserLogin_refreshToken_key" ON "UserLogin"("refreshToken");
 
 -- AddForeignKey
-ALTER TABLE "CarModel" ADD CONSTRAINT "CarModel_carModelId_fkey" FOREIGN KEY ("carModelId") REFERENCES "Car"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Car" ADD CONSTRAINT "Car_carModelId_fkey" FOREIGN KEY ("carModelId") REFERENCES "CarModel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rental" ADD CONSTRAINT "Rental_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Rental" ADD CONSTRAINT "Rental_carId_fkey" FOREIGN KEY ("carId") REFERENCES "Car"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Rental" ADD CONSTRAINT "Rental_carId_fkey" FOREIGN KEY ("carId") REFERENCES "Car"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Rental" ADD CONSTRAINT "Rental_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Rental" ADD CONSTRAINT "Rental_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserLogin" ADD CONSTRAINT "UserLogin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

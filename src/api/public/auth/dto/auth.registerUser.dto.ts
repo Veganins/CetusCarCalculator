@@ -17,6 +17,12 @@ export class RegisterDto {
     @IsNotEmpty()
     @IsOptional()
     @Type(() => Date)
+    getDrivingLicense: Date;
+    @ApiProperty()
+    @IsDate()
+    @IsNotEmpty()
+    @IsOptional()
+    @Type(() => Date)
     birthDate: Date;
     @ApiProperty()
     @IsOptional()

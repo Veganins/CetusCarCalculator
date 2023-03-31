@@ -5,6 +5,7 @@ import { AuthUserModule } from "./public/auth/auth.user.module";
 import { AtStrategy } from "./public/auth/strategies";
 import { PublicCarModule } from "./public/car/public.Car.module";
 import { PublicSearcherModule } from "./public/searcher/public.Searcher.module";
+import { PublicRentalModule } from "./public/rental/public.Rental.module";
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { PublicSearcherModule } from "./public/searcher/public.Searcher.module";
         AdminCarModelModule,
         PublicCarModule,
         PublicSearcherModule,
+        PublicRentalModule,
     ],
     providers: [AtStrategy],
 })

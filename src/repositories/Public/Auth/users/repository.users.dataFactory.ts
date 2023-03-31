@@ -39,4 +39,11 @@ export class RepositoryUsersDataFactory {
             roles: "USER",
         };
     }
+    static getDrivingLicense(
+        getDrivingLicense: Date | null
+    ): Pick<Prisma.UserCreateInput, "getDrivingLicense"> {
+        return {
+            getDrivingLicense,
+        };
+    }
 }

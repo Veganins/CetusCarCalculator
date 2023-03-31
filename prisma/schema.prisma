@@ -15,9 +15,21 @@ model Car {
 	startrentalDate DateTime? 
 	overRentalDate DateTime? 
 	carStatus CARSTATUS 
+	rental Rental[] @relation(name: "CarToRental")
 	carModelId Int? 
 	carModel CarModel? @relation(name: "CarToCarModel", fields: [carModelId], references: [id])
-	rental Rental[] @relation(name: "CarToRental")
+}
+model Rental {
+	id Int @id @default(autoincrement())
+	carId Int? 
+	car Car? @relation(name: "CarToRental", fields: [carId], references: [id])
+	createdAt DateTime @default(now())
+	updatedAt DateTime? @updatedAt
+	status RENTALSTATUS 
+	dateEndRental DateTime 
+	dateStartRental DateTime 
+	UserId Int? 
+	users User? @relation(name: "RentalToUser", fields: [UserId], references: [id])
 }
 model CarModel {
 	id Int @id @default(autoincrement())
@@ -26,34 +38,19 @@ model CarModel {
 	barnd String 
 	cars Car[] @relation(name: "CarToCarModel")
 }
-model Rental {
-	id Int @id @default(autoincrement())
-	employeeId Int 
-	carId Int 
-	userId Int 
-	createdAt DateTime @default(now())
-	updatedAt DateTime? @updatedAt
-	status RENTALSTATUS 
-	employee Employee @relation(name: "EmployeeToRental", fields: [employeeId], references: [id])
-	car Car @relation(name: "CarToRental", fields: [carId], references: [id])
-	user User @relation(name: "RentalToUser", fields: [userId], references: [id])
-}
-model Employee {
-	id Int @id
-	rental Rental[] @relation(name: "EmployeeToRental")
-}
 model User {
 	id Int @id @default(autoincrement())
-	rental Rental[] @relation(name: "RentalToUser")
 	email String @unique
 	password String 
 	phoneNumber String? 
 	address String? 
 	birthDate DateTime? 
 	expirationDateDrivingLicense DateTime? 
+	getDrivingLicense DateTime? 
 	createdAt DateTime? @default(now())
 	userLogins UserLogin[] @relation(name: "UserToUserLogin")
 	roles ROLE 
+	rental Rental[] @relation(name: "RentalToUser")
 	@@map("users")
 }
 model UserLogin {
