@@ -5,11 +5,12 @@ model User {
     phoneNumber String?
     address String?
     birthDate  DateTime?
-    expirationDateDrivingLicense DateTime?     
+    expirationDateDrivingLicense DateTime?   
+    getDrivingLicense   DateTime?
     createdAt  DateTime?     @default(now())
     userLogins UserLogin[]
     roles      ROLE  
-
+    rental Rental[]
 @@map("users")   
 }
 
@@ -17,6 +18,12 @@ model UserLogin {
     id     Int  @id
     userId Int
     users   User @relation(fields: [userId], references: [id])
+}
+model Rental{
+    id Int @id
+    UserId Int?
+
+    users   User? @relation(fields: [UserId], references: [id])
 }
 enum ROLE {
     USER

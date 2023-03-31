@@ -6,9 +6,17 @@ model Car{
     startrentalDate DateTime?
     overRentalDate DateTime?
     carStatus CARSTATUS
+    rental Rental[]
+
 }
 
 enum CARSTATUS {
     REPAIRING
     AVAILABLE
+}
+model Rental{
+    id Int @id
+    carId Int?
+
+    car Car? @relation(fields: [carId], references: [id])
 }
